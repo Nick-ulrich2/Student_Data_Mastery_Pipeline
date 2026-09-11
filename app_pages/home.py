@@ -1,14 +1,30 @@
 import streamlit as st
 from translations import t
+from streamlit_lottie import st_lottie
+import requests
+
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
 
 def home_page():
-    # Hero Section
-    st.title("🎓 Student Data Mastery Pipeline")
-    st.subheader(t(
-        "L'Ingénierie de la Performance Scolaire par la Data Science",
-        "Educational Performance Engineering through Data Science"
-    ))
+    # Animations
+    lottie_study = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_fcfjwiyb.json")
     
+    # Hero Section
+    col_h1, col_h2 = st.columns([2, 1])
+    with col_h1:
+        st.title("🎓 Student Data Mastery Pipeline")
+        st.subheader(t(
+            "L'Ingénierie de la Performance Scolaire par la Data Science",
+            "Educational Performance Engineering through Data Science"
+        ))
+    with col_h2:
+        if lottie_study:
+            st_lottie(lottie_study, height=150)
+
     st.markdown("---")
     
     # Value Proposition
