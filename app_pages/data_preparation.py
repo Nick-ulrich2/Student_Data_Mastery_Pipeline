@@ -11,6 +11,8 @@ from train import prepare_data
 from translations import t
 
 from options.option1.requirements.visual_eda import visual_eda
+import pygwalker as pyg
+from streamlit_extras.colored_header import colored_header
 
 def data_preparation():
     
@@ -31,7 +33,8 @@ def data_preparation():
         t("2. Comment sont-elles organisées ?", "2. How are they organized?"),
         t("3. Peut-on leur faire confiance ?", "3. Can they be trusted?"),
         t("4. Analyse visuelle (EDA)", "4. Visual analysis (EDA)"),
-        t("5. Comment sont-elles séparées ?", "5. How are they split?"),
+        t("5. Exploration Interactive", "5. Interactive Exploration"),
+        t("6. Comment sont-elles séparées ?", "6. How are they split?"),
     ]
 
     # Gestion de l'état de l'étape actuelle
@@ -111,24 +114,50 @@ def data_preparation():
             ):
                 go_to_step(2)
             if st.button(
-                t("Passer à la division des données →", "Go to data split →"),
-                key="next_to_split_from_eda",
+                t("Passer à l'exploration interactive →", "Go to interactive exploration →"),
+                key="next_to_pyg",
                 type="primary",
                 width="stretch",
             ):
                 go_to_step(4)
 
-    # Étape 5 : division des données
+    # Étape 5 : Pygwalker
     elif st.session_state.data_step == 4:
-        data_splitting(df, x_train, x_test)
+        colored_header(
+            label=t("Exploration Interactive avec Pygwalker", "Interactive Exploration with Pygwalker"),
+            description=t("Manipulez les données en temps réel pour créer vos propres graphiques.", "Manipulate data in real-time to create your own charts."),
+            color_name="orange-70",
+        )
+        # Pygwalker HTML export for Streamlit
+        pyg_html = pyg.to_html(df)
+        st.components.v1.html(pyg_html, height=800, scrolling=True)
         
         with st.container(horizontal=True):
             if st.button(
                 t("← Revenir à l'analyse visuelle", "← Back to visual analysis"),
-                key="back_to_eda",
+                key="back_to_eda_from_pyg",
                 width="stretch",
             ):
                 go_to_step(3)
+            if st.button(
+                t("Passer à la division des données →", "Go to data split →"),
+                key="next_to_split_from_pyg",
+                type="primary",
+                width="stretch",
+            ):
+                go_to_step(5)
+
+    # Étape 6 : division des données
+    elif st.session_state.data_step == 5:
+        data_splitting(df, x_train, x_test)
+        
+        with st.container(horizontal=True):
+            if st.button(
+                t("← Revenir à l'exploration interactive", "← Back to interactive exploration"),
+                key="back_to_pyg",
+                width="stretch",
+            ):
+                go_to_step(4)
             if st.button(
                 t("Recommencer le parcours", "Restart the walkthrough"),
                 key="restart_data_steps",
