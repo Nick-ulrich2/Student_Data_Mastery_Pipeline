@@ -1,0 +1,29 @@
+{
+  "projet": "Student Performance Predictor",
+  "variables": [
+    "Hours_Studied",
+    "Attendance",
+    "Parental_Involvement",
+    "Access_to_Resources",
+    "Extracurricular_Activities",
+    "Sleep_Hours",
+    "Previous_Scores",
+    "Internet_Access",
+    "Tutoring_Sessions",
+    "Family_Income",
+    "School_Type",
+    "Physical_Activity",
+    "Parental_Education_Level",
+    "Distance_from_Home",
+    "Gender",
+    "Electricity_Access",
+    "Region",
+    "Transport_Mode",
+    "Class_Size",
+    "Language_Section"
+  ],
+  "lignes_entraînement": 5285,
+  "lignes_test": 1322,
+  "modèle": "non sélectionné",
+  "métriques_test": {}
+}
