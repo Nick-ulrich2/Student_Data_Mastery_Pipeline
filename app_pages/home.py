@@ -64,9 +64,11 @@ def home_page():
     with tab3:
         st.info(t(
             "Nous utilisons une approche **'Glass Box'** : chaque transformation, chaque métrique (RMSE, MAE, R²) "
-            "et chaque importance de variable est expliquée et visualisée.",
+            "et chaque importance de variable est expliquée et visualisée. "
+            "Nous intégrons également **Pygwalker** pour une exploration interactive totale.",
             "We use a **'Glass Box'** approach: every transformation, every metric (RMSE, MAE, R²), "
-            "and every feature importance is explained and visualized."
+            "and every feature importance is explained and visualized. "
+            "We also integrate **Pygwalker** for total interactive exploration."
         ))
 
     st.markdown("---")

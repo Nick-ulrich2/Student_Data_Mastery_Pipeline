@@ -28,8 +28,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# Configuration du logo (Streamlit >= 1.35)
+st.logo("Graph/logo_spp.webp", icon_image="Graph/logo_spp.webp")
+
 # Sidebar UI
-st.sidebar.image("Graph/logo_spp.webp", width=200)
+# st.sidebar.image("Graph/logo_spp.webp", width=200) # Remplace par st.logo ci-dessus
 
 # Language management
 previous_language = st.session_state.get("language", "en")
@@ -45,17 +48,17 @@ if selected_language != previous_language:
     st.rerun()
 
 # Theme management
-previous_theme = st.session_state.get("theme", "dark")
-theme_value = st.sidebar.radio(
-    t("Thème", "Theme"),
-    ["light", "dark"],
-    index=1 if previous_theme == "dark" else 0,
-    format_func=lambda value: t("Clair", "Light") if value == "light" else t("Sombre", "Dark"),
-    key="theme_choice",
-)
-selected_theme = "dark" if theme_value in {"dark", "Dark", "Sombre"} else "light"
-set_theme(selected_theme)
-apply_theme(selected_theme)
+# previous_theme = st.session_state.get("theme", "dark")
+# theme_value = st.sidebar.radio(
+#     t("Thème", "Theme"),
+#     ["light", "dark"],
+#     index=1 if previous_theme == "dark" else 0,
+#     format_func=lambda value: t("Clair", "Light") if value == "light" else t("Sombre", "Dark"),
+#     key="theme_choice",
+# )
+# selected_theme = "dark" if theme_value in {"dark", "Dark", "Sombre"} else "light"
+# set_theme(selected_theme)
+# apply_theme(selected_theme)
 
 # Navigation definition
 from app_pages.home import home_page
