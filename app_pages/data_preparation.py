@@ -1,3 +1,4 @@
+import numpy as np
 import streamlit as st
 from options.option1.indicator import get_general_indicators
 from options.option1.requirements.data_splitting import data_splitting
@@ -9,7 +10,9 @@ from options.option1.requirements.title import title
 from train import prepare_data
 from translations import t
 
-def comprehension_prepa():
+from options.option1.requirements.visual_eda import visual_eda
+
+def data_preparation():
     
     # Affichage du titre de la page
     title()
@@ -27,7 +30,8 @@ def comprehension_prepa():
         t("1. Que contiennent les données ?", "1. What do the data contain?"),
         t("2. Comment sont-elles organisées ?", "2. How are they organized?"),
         t("3. Peut-on leur faire confiance ?", "3. Can they be trusted?"),
-        t("4. Comment sont-elles séparées ?", "4. How are they split?"),
+        t("4. Analyse visuelle (EDA)", "4. Visual analysis (EDA)"),
+        t("5. Comment sont-elles séparées ?", "5. How are they split?"),
     ]
 
     # Gestion de l'état de l'étape actuelle
@@ -35,7 +39,8 @@ def comprehension_prepa():
         st.session_state.data_step = 0
 
     # Affichage des boutons de navigation pour chaque étape
-    nav_buttons(step_names, go_to_step)
+    with st.container(horizontal=True):
+        nav_buttons(step_names, go_to_step)
 
     st.caption(
         f"{t('Étape actuelle', 'Current step')}: {st.session_state.data_step + 1} / "
@@ -60,15 +65,13 @@ def comprehension_prepa():
         dataset_struct(df)
 
         st.divider()
-        previous_col, next_col = st.columns(2)
-        with previous_col:
+        with st.container(horizontal=True):
             if st.button(
                 t("← Revenir au chargement", "← Back to loading"),
                 key="back_to_load",
                 width="stretch",
             ):
                 go_to_step(0)
-        with next_col:
             if st.button(
                 t("Passer à la qualité des données →", "Go to data quality →"),
                 key="next_to_quality",
@@ -81,36 +84,51 @@ def comprehension_prepa():
     elif st.session_state.data_step == 2:
         get_data_quality_indicators(df)
         
-        previous_col, next_col = st.columns(2)
-        with previous_col:
+        with st.container(horizontal=True):
             if st.button(
                 t("← Revenir à la structure", "← Back to structure"),
                 key="back_to_structure",
                 width="stretch",
             ):
                 go_to_step(1)
-        with next_col:
             if st.button(
-                t("Passer à la division des données →", "Go to data split →"),
-                key="next_to_split",
+                t("Passer à l'analyse visuelle →", "Go to visual analysis →"),
+                key="next_to_eda",
                 type="primary",
                 width="stretch",
             ):
                 go_to_step(3)
 
-    # Étape 4 : division des données
+    # Étape 4 : EDA Visuelle
     elif st.session_state.data_step == 3:
-        data_splitting(df, x_train, x_test)
+        visual_eda(df)
         
-        previous_col, finish_col = st.columns(2)
-        with previous_col:
+        with st.container(horizontal=True):
             if st.button(
                 t("← Revenir à la qualité", "← Back to quality"),
-                key="back_to_quality",
+                key="back_to_quality_from_eda",
                 width="stretch",
             ):
                 go_to_step(2)
-        with finish_col:
+            if st.button(
+                t("Passer à la division des données →", "Go to data split →"),
+                key="next_to_split_from_eda",
+                type="primary",
+                width="stretch",
+            ):
+                go_to_step(4)
+
+    # Étape 5 : division des données
+    elif st.session_state.data_step == 4:
+        data_splitting(df, x_train, x_test)
+        
+        with st.container(horizontal=True):
+            if st.button(
+                t("← Revenir à l'analyse visuelle", "← Back to visual analysis"),
+                key="back_to_eda",
+                width="stretch",
+            ):
+                go_to_step(3)
             if st.button(
                 t("Recommencer le parcours", "Restart the walkthrough"),
                 key="restart_data_steps",
@@ -118,6 +136,9 @@ def comprehension_prepa():
                 width="stretch",
             ):
                 go_to_step(0)
+
+if __name__ == "__main__":
+    data_preparation()
 
 
 

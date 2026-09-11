@@ -28,9 +28,22 @@ from translations import t
 
 sns.set_theme(style="whitegrid", context="notebook")
 
+import logging
+
+# Configuration du logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 @st.cache_data
 def load_data():
-    return pd.read_csv("data/SPP.csv")
+    try:
+        df = pd.read_csv("data/SPP.csv")
+        logger.info("Dataset chargé avec succès.")
+        return df
+    except Exception as e:
+        logger.error(f"Erreur lors du chargement des données : {e}")
+        st.error(t("Erreur critique : Impossible de charger le fichier de données.", "Critical error: Unable to load data file."))
+        return pd.DataFrame()
 
 def validate_data(data : pd.DataFrame, TARGET) -> pd.DataFrame:
     # Vu que le max est a 101, je le remets a 100
