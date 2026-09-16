@@ -1,11 +1,12 @@
 import streamlit as st
 from themes import apply_theme, set_theme
 from translations import LANGUAGES, install_ui_translation, set_language, t
+from config import LOGO_PATH
 
 # Page configurations
 st.set_page_config(
     page_title="Student Performance Predictor",
-    page_icon="Graph/logo_spp.webp",
+    page_icon=str(LOGO_PATH),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -29,7 +30,7 @@ st.markdown(
 )
 
 # Configuration du logo (Streamlit >= 1.35)
-st.logo("Graph/logo_spp.webp", icon_image="Graph/logo_spp.webp")
+st.logo(str(LOGO_PATH), icon_image=str(LOGO_PATH))
 
 # Sidebar UI
 # st.sidebar.image("Graph/logo_spp.webp", width=200) # Remplace par st.logo ci-dessus

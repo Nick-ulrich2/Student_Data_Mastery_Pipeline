@@ -1,29 +1,117 @@
 {
-  "projet": "Student Performance Predictor",
-  "variables": [
+  "project": "Student Performance Predictor",
+  "target": "Exam_Score",
+  "selected_model": "ridge",
+  "features": [
     "Hours_Studied",
     "Attendance",
+    "Sleep_Hours",
+    "Previous_Scores",
+    "Tutoring_Sessions",
+    "Physical_Activity",
+    "Class_Size",
     "Parental_Involvement",
     "Access_to_Resources",
     "Extracurricular_Activities",
-    "Sleep_Hours",
-    "Previous_Scores",
     "Internet_Access",
-    "Tutoring_Sessions",
     "Family_Income",
     "School_Type",
-    "Physical_Activity",
     "Parental_Education_Level",
     "Distance_from_Home",
     "Gender",
     "Electricity_Access",
     "Region",
     "Transport_Mode",
-    "Class_Size",
     "Language_Section"
   ],
-  "lignes_entraînement": 5285,
-  "lignes_test": 1322,
-  "modèle": "non sélectionné",
-  "métriques_test": {}
+  "numeric_features": [
+    "Hours_Studied",
+    "Attendance",
+    "Sleep_Hours",
+    "Previous_Scores",
+    "Tutoring_Sessions",
+    "Physical_Activity",
+    "Class_Size"
+  ],
+  "categorical_features": [
+    "Parental_Involvement",
+    "Access_to_Resources",
+    "Extracurricular_Activities",
+    "Internet_Access",
+    "Family_Income",
+    "School_Type",
+    "Parental_Education_Level",
+    "Distance_from_Home",
+    "Gender",
+    "Electricity_Access",
+    "Region",
+    "Transport_Mode",
+    "Language_Section"
+  ],
+  "random_state": 42,
+  "test_size": 0.2,
+  "cv_folds": 5,
+  "training_rows": 5285,
+  "test_rows": 1322,
+  "test_metrics": {
+    "mae": 0.7387475488634461,
+    "rmse": 1.9243997571975355,
+    "r2": 0.7380052749951456
+  },
+  "cv": {
+    "dummy_mean": {
+      "cv_mae_mean": 2.852255584923325,
+      "cv_mae_std": 0.06949660028457416,
+      "cv_rmse_mean": 3.918224908721619,
+      "cv_rmse_std": 0.14611819019935748,
+      "cv_r2_mean": -0.00021002530437357335,
+      "cv_r2_std": 0.00029909715759298186
+    },
+    "ridge": {
+      "cv_mae_mean": 0.8098481773548049,
+      "cv_mae_std": 0.04150820755330386,
+      "cv_rmse_mean": 2.19692178086686,
+      "cv_rmse_std": 0.1957627725083756,
+      "cv_r2_mean": 0.6855133477030306,
+      "cv_r2_std": 0.036358188763817086
+    },
+    "random_forest": {
+      "cv_mae_mean": 1.1895709168052588,
+      "cv_mae_std": 0.060224581827467774,
+      "cv_rmse_mean": 2.409895295690963,
+      "cv_rmse_std": 0.183855095775272,
+      "cv_r2_mean": 0.6218096109933894,
+      "cv_r2_std": 0.03347253530809244
+    },
+    "extra_trees": {
+      "cv_mae_mean": 1.1692293703353303,
+      "cv_mae_std": 0.0521579582281276,
+      "cv_rmse_mean": 2.400105889527861,
+      "cv_rmse_std": 0.1899653227437145,
+      "cv_r2_mean": 0.6248816569375819,
+      "cv_r2_std": 0.03511341563346776
+    },
+    "gradient_boosting": {
+      "cv_mae_mean": 1.0329207687484332,
+      "cv_mae_std": 0.05794737151188858,
+      "cv_rmse_mean": 2.3200237392019023,
+      "cv_rmse_std": 0.19504364426287624,
+      "cv_r2_mean": 0.6494014859937192,
+      "cv_r2_std": 0.03656702524136258
+    }
+  },
+  "dataset_manifest": {
+    "file_name": "SPP.csv",
+    "sha256": "fabe64f72c8ff21820aa5fcd10442d065b3255408879f07a642ae32a67ad4526",
+    "bytes": 706250,
+    "rows": 6607,
+    "columns": 21
+  },
+  "python": "3.14.4",
+  "pandas": "3.0.5",
+  "scikit_learn": "1.9.0",
+  "notes": [
+    "Les métriques de test sont calculées avant le réentraînement final sur toutes les données.",
+    "Les importances décrivent des associations prédictives et non des effets causaux."
+  ]
 }

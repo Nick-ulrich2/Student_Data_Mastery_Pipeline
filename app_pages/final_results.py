@@ -7,6 +7,7 @@ from train import (
     prepare_data,
 )
 from translations import t
+from config import MODEL_HASH_PATH, MODEL_PATH
 
 def final_results():
     st.title(t("Résultats, graphiques et modèle final", "Results, charts and final model"))
@@ -153,21 +154,19 @@ def final_results():
             st.warning(t("Réentraînez d'abord le modèle sur toutes les données.", "Retrain the model on all data first."))
         elif st.button(t("Enregistrer le modèle final", "Save final model"), type="primary", width="stretch"):
             try:
-                model_path = Path("artifacts/models/model.joblib")
-                model_path.parent.mkdir(parents=True, exist_ok=True)
-                joblib.dump(production_model, model_path)
+                MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+                joblib.dump(production_model, MODEL_PATH)
                 
                 # Calcul du hash pour la sécurité
                 import hashlib
                 sha256_hash = hashlib.sha256()
-                with open(model_path, "rb") as f:
+                with open(MODEL_PATH, "rb") as f:
                     for byte_block in iter(lambda: f.read(4096), b""):
                         sha256_hash.update(byte_block)
                 
-                hash_path = model_path.with_suffix(".sha256")
-                hash_path.write_text(sha256_hash.hexdigest())
+                MODEL_HASH_PATH.write_text(sha256_hash.hexdigest())
                 
-                st.success(f"{t('Modèle sauvegardé et sécurisé dans', 'Model saved and secured in')} : {model_path}")
+                st.success(f"{t('Modèle sauvegardé et sécurisé dans', 'Model saved and secured in')} : {MODEL_PATH}")
             except Exception as e:
                 st.error(f"Erreur lors de la sauvegarde : {e}")
         if st.button(t("Recommencer ce groupe", "Restart this group"), width="stretch"):

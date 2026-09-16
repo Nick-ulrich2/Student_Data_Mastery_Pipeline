@@ -1,18 +1,8 @@
 import streamlit as st
 from translations import t
-from streamlit_lottie import st_lottie
-import requests
-
-def load_lottieurl(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
+from config import LOGO_PATH
 
 def home_page():
-    # Animations
-    lottie_study = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_fcfjwiyb.json")
-    
     # Hero Section
     col_h1, col_h2 = st.columns([2, 1])
     with col_h1:
@@ -22,8 +12,7 @@ def home_page():
             "Educational Performance Engineering through Data Science"
         ))
     with col_h2:
-        if lottie_study:
-            st_lottie(lottie_study, height=150)
+        st.image(str(LOGO_PATH), width=180)
 
     st.markdown("---")
     
@@ -39,8 +28,6 @@ def home_page():
             "that transforms raw data into transparent and auditable algorithmic decisions. "
             "It simulates the entire Machine Learning project lifecycle, from exploration to production."
         ))
-    with col2:
-        st.image("Graph/logo_spp.webp", width=200)
 
     st.markdown("---")
 
@@ -80,11 +67,9 @@ def home_page():
     with tab3:
         st.info(t(
             "Nous utilisons une approche **'Glass Box'** : chaque transformation, chaque métrique (RMSE, MAE, R²) "
-            "et chaque importance de variable est expliquée et visualisée. "
-            "Nous intégrons également **Pygwalker** pour une exploration interactive totale.",
+            "et chaque importance de variable est expliquée et visualisée.",
             "We use a **'Glass Box'** approach: every transformation, every metric (RMSE, MAE, R²), "
-            "and every feature importance is explained and visualized. "
-            "We also integrate **Pygwalker** for total interactive exploration."
+            "and every feature importance is explained and visualized."
         ))
 
     st.markdown("---")

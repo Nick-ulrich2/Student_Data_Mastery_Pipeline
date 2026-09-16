@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from train import prepare_data
 from translations import t
+from config import METRICS_PATH
 
 def final_report():
     st.title(t("Rapport final et traçabilité", "Final report and traceability"))
@@ -82,10 +83,9 @@ def final_report():
         )
         metadata = st.session_state.get("metadata", {})
         if st.button(t("Enregistrer les métadonnées", "Save metadata"), type="primary", width="stretch"):
-            metadata_path = Path("artifacts/metadata.json")
-            metadata_path.parent.mkdir(parents=True, exist_ok=True)
-            metadata_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
-            st.success(f"{t('Métadonnées enregistrées dans', 'Metadata saved in')} : {metadata_path}")
+            METRICS_PATH.parent.mkdir(parents=True, exist_ok=True)
+            METRICS_PATH.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
+            st.success(f"{t('Métadonnées enregistrées dans', 'Metadata saved in')} : {METRICS_PATH}")
         with st.container(horizontal=True):
             if st.button(t("← Revenir aux métadonnées", "← Back to metadata"), width="stretch"):
                 go_to_report_step(0)

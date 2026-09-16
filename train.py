@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("data/SPP.csv")
+        df = pd.read_csv(DATA_PATH)
         logger.info("Dataset chargé avec succès.")
         return df
     except Exception as e:
@@ -143,17 +143,17 @@ def metric_dict(y_true: pd.Series | np.ndarray, y_pred: np.ndarray) -> dict[str,
     }
 
 
-# def dataset_manifest(path: Path) -> dict[str, object]:
-#     """Crée une fiche d'identité du fichier de données."""
-#     raw_bytes = path.read_bytes()
-#     frame = pd.read_csv(path)
-#     return {
-#         "file_name": path.name,
-#         "sha256": hashlib.sha256(raw_bytes).hexdigest(),
-#         "bytes": len(raw_bytes),
-#         "rows": int(frame.shape[0]),
-#         "columns": int(frame.shape[1]),
-#     }
+def dataset_manifest(path: Path) -> dict[str, object]:
+    """Crée une fiche d'identité du fichier de données."""
+    raw_bytes = path.read_bytes()
+    frame = pd.read_csv(path)
+    return {
+        "file_name": path.name,
+        "sha256": hashlib.sha256(raw_bytes).hexdigest(),
+        "bytes": len(raw_bytes),
+        "rows": int(frame.shape[0]),
+        "columns": int(frame.shape[1]),
+    }
 
 
 def cross_validate_candidates(
@@ -398,6 +398,9 @@ def save_figures(
 def main() -> None:
     """Exécute l'entraînement complet du projet."""
 
+    ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+
     df = load_data()
     
     x, y = validate_data(df, TARGET)
@@ -436,6 +439,10 @@ def main() -> None:
     production_pipeline = model_candidates()[selected_name]
     production_pipeline.fit(x, y)
     joblib.dump(production_pipeline, MODEL_PATH)
+    MODEL_HASH_PATH.write_text(
+        hashlib.sha256(MODEL_PATH.read_bytes()).hexdigest(),
+        encoding="ascii",
+    )
 
     metadata = {
         "project": "Student Performance Predictor",

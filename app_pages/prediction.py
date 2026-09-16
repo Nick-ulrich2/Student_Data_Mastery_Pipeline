@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from translations import t
-from config import NUMERIC_FEATURES, CATEGORICAL_FEATURES, TARGET
+from config import CATEGORICAL_FEATURES, MODEL_PATH, NUMERIC_FEATURES, TARGET
 import streamlit_shadcn_ui as ui
 from reportlab.pdfgen import canvas
 from io import BytesIO
@@ -29,9 +29,7 @@ def generate_pdf_report(student_data, prediction):
 def prediction_page():
     st.title(t("🚀 Mode Production : Prédicteur", "🚀 Production Mode: Predictor"))
     
-    model_path = Path("artifacts/models/model.joblib")
-    
-    if not model_path.exists():
+    if not MODEL_PATH.exists():
         ui.alert(
             title=t("Modèle manquant", "Model Missing"),
             text=t("Veuillez d'abord entraîner le modèle via le pipeline.", "Please train the model via the pipeline first."),
@@ -42,11 +40,11 @@ def prediction_page():
     # Statistiques rapides en haut
     cols = st.columns(3)
     with cols[0]:
-        ui.metric_card(title="Model Status", content="Active", description="SHA-256 Verified")
+        ui.metric_card(label="Model Status", value="Active", description="SHA-256 Verified", key="model_status")
     with cols[1]:
-        ui.metric_card(title="Confidence", content="High", description="R² > 0.8")
+        ui.metric_card(label="Confidence", value="High", description="R² > 0.8", key="model_confidence")
     with cols[2]:
-        ui.metric_card(title="Audit", content="Passed", description="No bias detected")
+        ui.metric_card(label="Audit", value="Passed", description="No bias detected", key="model_audit")
 
     st.info(t(
         "Saisissez les caractéristiques d'un étudiant pour estimer sa performance à l'examen.",
@@ -90,7 +88,7 @@ def prediction_page():
     if submit:
         try:
             with st.spinner(t("Calcul de la prédiction...", "Calculating prediction...")):
-                model = joblib.load(model_path)
+                model = joblib.load(MODEL_PATH)
                 input_df = pd.DataFrame([inputs])
                 prediction = model.predict(input_df)[0]
                 prediction = max(0, min(100, prediction))
@@ -119,9 +117,6 @@ def prediction_page():
             ))
         except Exception as e:
             st.error(f"Erreur lors de la prédiction : {e}")
-
-if __name__ == "__main__":
-    prediction_page()
 
 if __name__ == "__main__":
     prediction_page()
